@@ -1,59 +1,30 @@
-# 🎓 Sistema de Registro de Estudiantes (PHP + MySQL + Excel)
+# Sistema de Registro de Estudiantes
 
-Aplicación web para gestión de estudiantes con almacenamiento en MySQL y exportación directa a Excel/CSV. Desarrollada para despliegue en **Alwaysdata** y repositorios de **GitHub**.
+Aplicación PHP y MySQL para registrar, buscar, editar y eliminar estudiantes, con exportación CSV compatible con Excel.
 
-## 🚀 Características
-- **CRUD Completo**: Crear, listar, editar y eliminar estudiantes.
-- **Búsqueda Dinámica**: Filtro en tiempo real con JavaScript.
-- **Exportación a Excel**: Generación de reportes descargables en CSV/Excel con codificación UTF-8 BOM.
-- **Responsive Design**: Interfaz limpia estilizada con Bootstrap 5 y FontAwesome.
-- **Arquitectura Limpia**: Separación de lógica backend (PHP/PDO), base de datos y frontend (AJAX/JS).
+## Base de datos
 
----
+1. Crea la base `jojoapp_estudiantes` en Alwaysdata.
+2. Importa `database.sql` desde phpMyAdmin.
+3. Configura estas variables de entorno para PHP en el hosting:
 
-## 🗄️ Configuración de Base de Datos (Alwaysdata)
+   - `DB_HOST`: host MySQL de Alwaysdata
+   - `DB_NAME`: nombre de la base de datos
+   - `DB_USER`: usuario MySQL
+   - `DB_PASS`: contraseña del usuario MySQL
 
-1. Ingresa a tu panel de **Alwaysdata** -> **Databases** -> **MySQL**.
-2. Asegúrate de tener creada la base de datos: `jojoapp_estudiantes`.
-3. Abre **phpMyAdmin** e importa o ejecuta el script SQL ubicado en `database.sql`:
+La app lee estas variables en `config/database.php`. La configuración se guarda en `config/`, fuera de `public/`.
 
-```sql
-CREATE TABLE IF NOT EXISTS estudiantes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    edad INT NOT NULL,
-    email VARCHAR(150) NULL,
-    carrera VARCHAR(100) NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-```
+## Sitio en Alwaysdata
 
-4. Edita el archivo `config/database.php` con la contraseña de tu usuario MySQL de Alwaysdata:
+Configura la raíz del sitio `jojoapp.alwaysdata.net` como `www/public`. El workflow sincroniza el repositorio completo a `www/`, de modo que la API queda en `www/public/actions/` y la configuración en `www/config/`.
 
-```php
-define('DB_HOST', 'mysql-jojoapp.alwaysdata.net');
-define('DB_NAME', 'jojoapp_estudiantes');
-define('DB_USER', 'jojoapp');
-define('DB_PASS', '3108787231Jc.');
-```
+## Despliegue desde GitHub Actions
 
----
+En el repositorio, crea estos GitHub Actions Secrets:
 
-## 🌐 Despliegue en Alwaysdata
+- `FTP_SERVER`: servidor FTP/FTPS de Alwaysdata
+- `FTP_USERNAME`: usuario FTP
+- `FTP_PASSWORD`: contraseña FTP
 
-1. Ve al panel de Alwaysdata -> **Web** -> **Sites**.
-2. En la raíz de tu sitio o subdominio, apunta el directorio hacia `public/` (ej: `/www/public` o `/registro-estudiantes/public`).
-3. Sube los archivos del proyecto vía FTP/SFTP o Git.
-
----
-
-## 🐙 Subir a GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit - Registro de Estudiantes"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/registro-estudiantes.git
-git push -u origin main
-```
+Cada push a `main` sincroniza los archivos a Alwaysdata. No pongas contraseñas de MySQL o FTP en el código.

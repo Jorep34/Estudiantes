@@ -1,6 +1,3 @@
-# Archivos de configuración con credenciales sensibles
-config/database.php
-
 # Dependencias y logs
 vendor/
 *.log
