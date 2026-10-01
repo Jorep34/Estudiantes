@@ -14,9 +14,9 @@ jobs:
       - name: Deploy application files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ ftp-jojoapp.alwaysdata.net }}
-          username: ${{ jojoapp }}
-          password: ${{ 3108787231Jc. }}
+          server: ftp-jojoapp.alwaysdata.net 
+          username: jojoapp
+          password: 3108787231Jc.
           server-dir: www/
           protocol: ftps
           exclude: |
