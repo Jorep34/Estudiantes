@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let allStudents = [];
 
 function loadStudents() {
-    fetch('../actions/listar.php')
+    fetch('/actions/listar.php')
         .then(res => res.json())
         .then(data => {
             if (data.status === 'success') {
@@ -58,7 +58,7 @@ function handleFormSubmit(e) {
     e.preventDefault();
     const formData = new FormData(this);
 
-    fetch('../actions/guardar.php', {
+    fetch('/actions/guardar.php', {
         method: 'POST',
         body: formData
     })
@@ -107,7 +107,7 @@ function deleteStudent(id) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch('../actions/eliminar.php', {
+    fetch('/actions/eliminar.php', {
         method: 'POST',
         body: formData
     })
