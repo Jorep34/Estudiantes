@@ -1,116 +1,59 @@
-# Registro de Estudiantes
+# 🎓 Sistema de Registro de Estudiantes (PHP + MySQL + Excel)
 
-Aplicación web desarrollada en Python + Flask para registrar estudiantes y almacenar la información en un archivo Excel.
+Aplicación web para gestión de estudiantes con almacenamiento en MySQL y exportación directa a Excel/CSV. Desarrollada para despliegue en **Alwaysdata** y repositorios de **GitHub**.
 
-## Funcionalidades
+## 🚀 Características
+- **CRUD Completo**: Crear, listar, editar y eliminar estudiantes.
+- **Búsqueda Dinámica**: Filtro en tiempo real con JavaScript.
+- **Exportación a Excel**: Generación de reportes descargables en CSV/Excel con codificación UTF-8 BOM.
+- **Responsive Design**: Interfaz limpia estilizada con Bootstrap 5 y FontAwesome.
+- **Arquitectura Limpia**: Separación de lógica backend (PHP/PDO), base de datos y frontend (AJAX/JS).
 
-- Registro de nombre y edad.
-- Validación de datos.
-- Generación automática del archivo `data/estudiantes.xlsx`.
-- Listado de estudiantes registrados.
-- Eliminación de registros.
-- Contador de estudiantes.
-- Diseño adaptable a computador y celular.
-- Endpoint `/salud` para comprobar que la aplicación está funcionando.
-- Preparada para GitHub y despliegues con Gunicorn.
+---
 
-## Requisitos
+## 🗄️ Configuración de Base de Datos (Alwaysdata)
 
-- Python 3.10 o superior.
-- pip.
+1. Ingresa a tu panel de **Alwaysdata** -> **Databases** -> **MySQL**.
+2. Asegúrate de tener creada la base de datos: `jojoapp_estudiantes`.
+3. Abre **phpMyAdmin** e importa o ejecuta el script SQL ubicado en `database.sql`:
 
-## Instalación local
-
-```bash
-python -m venv .venv
+```sql
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    edad INT NOT NULL,
+    email VARCHAR(150) NULL,
+    carrera VARCHAR(100) NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-### Windows
+4. Edita el archivo `config/database.php` con la contraseña de tu usuario MySQL de Alwaysdata:
 
-```bash
-.venv\Scripts\activate
+```php
+define('DB_HOST', 'mysql-jojoapp.alwaysdata.net');
+define('DB_NAME', 'jojoapp_estudiantes');
+define('DB_USER', 'jojoapp');
+define('DB_PASS', 'TU_CONTRASEÑA_AQUI');
 ```
 
-### Linux/macOS
+---
 
-```bash
-source .venv/bin/activate
-```
+## 🌐 Despliegue en Alwaysdata
 
-Instalar dependencias:
+1. Ve al panel de Alwaysdata -> **Web** -> **Sites**.
+2. En la raíz de tu sitio o subdominio, apunta el directorio hacia `public/` (ej: `/www/public` o `/registro-estudiantes/public`).
+3. Sube los archivos del proyecto vía FTP/SFTP o Git.
 
-```bash
-pip install -r requirements.txt
-```
+---
 
-Ejecutar:
-
-```bash
-python app.py
-```
-
-Abrir en el navegador:
-
-```text
-http://127.0.0.1:5000
-```
-
-## Estructura
-
-```text
-registro-estudiantes/
-├── app.py
-├── requirements.txt
-├── Procfile
-├── README.md
-├── .gitignore
-├── templates/
-│   └── index.html
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── app.js
-└── data/
-    └── estudiantes.xlsx
-```
-
-## GitHub
-
-Desde la carpeta del proyecto:
+## 🐙 Subir a GitHub
 
 ```bash
 git init
 git add .
-git commit -m "Proyecto inicial registro de estudiantes"
+git commit -m "Initial commit - Registro de Estudiantes"
 git branch -M main
-git remote add origin https://github.com/TU-USUARIO/TU-REPOSITORIO.git
+git remote add origin https://github.com/TU_USUARIO/registro-estudiantes.git
 git push -u origin main
 ```
-
-## AlwaysData
-
-Este proyecto usa Flask y Gunicorn. En un servidor AlwaysData debes configurar:
-
-- El entorno Python.
-- Las dependencias de `requirements.txt`.
-- El comando de inicio mediante Gunicorn:
-  `gunicorn app:app`
-- El directorio raíz del proyecto.
-- El dominio o subdominio que quieras utilizar.
-
-### Importante sobre Excel
-
-El archivo Excel funciona bien para un proyecto académico o con pocos usuarios. Para una aplicación pública con varios usuarios simultáneos, es recomendable migrar el almacenamiento a SQLite o MySQL y usar Excel como formato de exportación.
-
-## Seguridad
-
-Antes de publicar:
-
-1. Cambia `app.secret_key` por una clave secreta propia.
-2. No guardes contraseñas, documentos de identidad u otros datos sensibles en este proyecto sin implementar las medidas de seguridad correspondientes.
-3. No subas credenciales ni secretos al repositorio.
-
-## Licencia
-
-Proyecto académico.
