@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Estudiantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <h1>Registro de Estudiantes</h1>
+                <p>Gestión académica</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div>
+                <span class="eyebrow">SISTEMA ACADÉMICO</span>
+                <h2>Administra tus estudiantes de forma sencilla.</h2>
+                <p>Registra, consulta y elimina estudiantes. La información se almacena automáticamente en Excel.</p>
+            </div>
+            <div class="total-card">
+                <span>Total registrados</span>
+                <strong>{{ total }}</strong>
+            </div>
+        </section>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="grid">
+            <article class="card form-card">
+                <div class="card-header">
+                    <div>
+                        <span class="section-label">NUEVO REGISTRO</span>
+                        <h3>Registrar estudiante</h3>
+                    </div>
+                    <span class="number">01</span>
+                </div>
+
+                <form action="{{ url_for('registrar') }}" method="post" id="studentForm">
+                    <label for="nombre">Nombre completo</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Ej. Juan Pérez"
+                        maxlength="100"
+                        required
+                    >
+
+                    <label for="edad">Edad</label>
+                    <input
+                        type="number"
+                        id="edad"
+                        name="edad"
+                        min="1"
+                        max="120"
+                        placeholder="Ej. 18"
+                        required
+                    >
+
+                    <button type="submit" class="primary-btn">
+                        <span>Registrar estudiante</span>
+                        <span>→</span>
+                    </button>
+                </form>
+            </article>
+
+            <article class="card list-card">
+                <div class="card-header">
+                    <div>
+                        <span class="section-label">REGISTROS</span>
+                        <h3>Estudiantes registrados</h3>
+                    </div>
+                    <span class="number">02</span>
+                </div>
+
+                <div class="table-wrapper">
+                    {% if estudiantes %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for estudiante in estudiantes %}
+                                <tr>
+                                    <td><span class="id-badge">{{ estudiante.id }}</span></td>
+                                    <td class="student-name">{{ estudiante.nombre }}</td>
+                                    <td>{{ estudiante.edad }} años</td>
+                                    <td>
+                                        <form
+                                            action="{{ url_for('eliminar', estudiante_id=estudiante.id) }}"
+                                            method="post"
+                                            class="delete-form"
+                                            onsubmit="return confirm('¿Desea eliminar este estudiante?');"
+                                        >
+                                            <button type="submit" class="delete-btn" title="Eliminar">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="empty">
+                            <div class="empty-icon">📋</div>
+                            <h4>No hay estudiantes registrados</h4>
+                            <p>Utiliza el formulario para agregar el primer estudiante.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </article>
+        </section>
+
+        <section class="info">
+            <div class="info-icon">📊</div>
+            <div>
+                <strong>Almacenamiento en Excel</strong>
+                <p>Cada registro se guarda automáticamente en <code>data/estudiantes.xlsx</code>.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Proyecto Registro de Estudiantes · Python + Flask + Excel</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
