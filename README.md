@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS estudiantes (
 define('DB_HOST', 'mysql-jojoapp.alwaysdata.net');
 define('DB_NAME', 'jojoapp_estudiantes');
 define('DB_USER', 'jojoapp');
-define('DB_PASS', 'TU_CONTRASEÑA_AQUI');
+define('DB_PASS', '3108787231Jc.');
 ```
 
 ---
