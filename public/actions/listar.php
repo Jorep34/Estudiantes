@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once '../config/database.php';
+require_once dirname(__DIR__, 2) . '/config/database.php';
 
 try {
     $db = getDB();
@@ -8,5 +8,7 @@ try {
     $estudiantes = $stmt->fetchAll();
     echo json_encode(['status' => 'success', 'data' => $estudiantes]);
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Error al obtener estudiantes: ' . $e->getMessage()]);
+    error_log('Could not list students: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'No fue posible cargar los estudiantes.']);
 }

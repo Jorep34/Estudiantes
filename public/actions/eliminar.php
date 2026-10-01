@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once '../config/database.php';
+require_once dirname(__DIR__, 2) . '/config/database.php';
 
 $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 
@@ -15,5 +15,7 @@ try {
     $stmt->execute([$id]);
     echo json_encode(['status' => 'success', 'message' => 'Estudiante eliminado con éxito.']);
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Error al eliminar: ' . $e->getMessage()]);
+    error_log('Could not delete student: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'No fue posible eliminar el estudiante.']);
 }

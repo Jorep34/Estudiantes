@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once '../config/database.php';
+require_once dirname(__DIR__, 2) . '/config/database.php';
 
 $id = isset($_POST['id']) && !empty($_POST['id']) ? intval($_POST['id']) : null;
 $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
@@ -32,5 +32,7 @@ try {
         echo json_encode(['status' => 'success', 'message' => 'Estudiante registrado con éxito.']);
     }
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Error en base de datos: ' . $e->getMessage()]);
+    error_log('Could not save student: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'No fue posible guardar el estudiante.']);
 }
